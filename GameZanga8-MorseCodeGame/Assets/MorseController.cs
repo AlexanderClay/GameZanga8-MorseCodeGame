@@ -32,13 +32,20 @@ public class MorseController : MonoBehaviour {
 	{
 		canAcceptMorse = false;
 		StartCoroutine("CanAcceptMorseAgainCountdown");
+
+		GameManager.NewTurn();
 		// compare morse
 
 		for (int i = 0; i < myMorseCodeList.morseCodeList.Count; i += 1) {
 			if (myMorseCodeList.morseCodeList[i] == parsedMorse) {
-				if (i + 1 / 2 <= 18) {
+				
+				if ((i + 1) <= 18) {
 					// left side of transforms
 					morseCodeHighlighterLeft.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-33f, 20f);
+					morseCodeHighlighterLeft.GetComponent<Animator>().SetTrigger("anim");
+				} else {
+					morseCodeHighlighterRight.position = morseCodeCanvasTransform.GetChild(i+1).transform.position + new Vector3(-33f, 20f);
+					morseCodeHighlighterRight.GetComponent<Animator>().SetTrigger("anim");
 				}
 			}
 		}
@@ -53,7 +60,10 @@ public class MorseController : MonoBehaviour {
 		canAcceptMorse = true;
 		parsedMorse = "";
 		foreach (Transform child in transform) {
-			Destroy(child.gameObject);
+			if (child.name != "Cursor") {
+
+				Destroy(child.gameObject);
+			}
 		}
 	}
 	void Update ()
@@ -93,13 +103,15 @@ public class MorseController : MonoBehaviour {
 
 			if (playedDash == true) {
 				parsedMorse += "-";
-				GameObject.Instantiate(morseDash, transform);
+				GameObject obj = GameObject.Instantiate(morseDash, transform);
+				obj.transform.SetSiblingIndex(transform.childCount - 2);
 			} else {
 				parsedMorse += ".";
-				GameObject.Instantiate(morseDot, transform);
+				GameObject obj =  GameObject.Instantiate(morseDot, transform);
+				obj.transform.SetSiblingIndex(transform.childCount - 2);
 			}
 			// checkMorse()
-			if (parsedMorse.Length >= 6) {
+			if (parsedMorse.Length >= 5) {
 				SendMorse();
 			}
 

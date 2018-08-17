@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class MetroitSpawner : MonoBehaviour {
 
-
+	public float turnsUntilSpawn;
+	public float numberToSpawn;
 	// Use this for initialization
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
