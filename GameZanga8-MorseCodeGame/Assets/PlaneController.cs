@@ -9,6 +9,7 @@ public class PlaneController : MonoBehaviour {
 	public bool dirLeft;
 
 	private Vector3 target;
+	private Rigidbody2D myRigidbody;
 
 	void Start () {
 		GameManager.objectTurnStack.Add(transform);
@@ -16,11 +17,12 @@ public class PlaneController : MonoBehaviour {
 		GetComponent<SpriteRenderer>().flipX = dirLeft;
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 		target = transform.position;
+		myRigidbody = GetComponent<Rigidbody2D>();
 	}
 
 	public void Update()
 	{
-		transform.position = Vector3.Lerp(transform.position, target, rate);
+		myRigidbody.MovePosition(Vector3.Lerp(transform.position, target, rate));
 	}
 
 	public void NewTurn () {

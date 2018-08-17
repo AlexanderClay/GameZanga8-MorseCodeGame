@@ -7,6 +7,8 @@ public class MeteorController : MonoBehaviour
 	public float rate = 0.4f;
 	public Vector2 gridPos;
 	private Vector3 target;
+
+	private Rigidbody2D myRigidbody;
 	// Use this for initialization
 	void Start()
 	{
@@ -14,10 +16,11 @@ public class MeteorController : MonoBehaviour
 
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 		target = transform.position;
+		myRigidbody = GetComponent<Rigidbody2D>();
 	}
-	public void Update()
+	public void FixedUpdate()
 	{
-		transform.position = Vector3.Lerp(transform.position, target, rate);
+		myRigidbody.MovePosition(Vector3.Lerp(transform.position, target, rate));
 	}
 	public void NewTurn()
 	{

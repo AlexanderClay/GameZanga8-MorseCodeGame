@@ -34,24 +34,25 @@ public class MorseController : MonoBehaviour {
 	{
 		canAcceptMorse = false;
 		StartCoroutine("CanAcceptMorseAgainCountdown");
+		StopCoroutine("MorseSendCountdown");
 
 		// compare morse
 
 		for (int i = 0; i < myMorseCodeList.morseCodeList.Count; i += 1) {
 			if (myMorseCodeList.morseCodeList[i] == parsedMorse) {
 
-
+				GameManager.SpawnExplosionAtIndex(i);
 
 				if ((i + 1) <= 13) {
 					// left side of transforms
-					morseCodeHighlighter1.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-33f, 20f);
+					morseCodeHighlighter1.GetComponent<RectTransform>().anchoredPosition = morseCodeCanvasTransform.GetChild(i).localPosition; //+ new Vector3(-33f, 20f);
 					morseCodeHighlighter1.GetComponent<Animator>().SetTrigger("anim");
 				} else if ((i + 1) <= 26) {
 					// left side of transforms
-					morseCodeHighlighter2.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-28f, 20f);
+					morseCodeHighlighter2.GetComponent<RectTransform>().anchoredPosition = morseCodeCanvasTransform.GetChild(i).localPosition; //+ new Vector3(-28f, 20f);
 					morseCodeHighlighter2.GetComponent<Animator>().SetTrigger("anim");
 				} else {
-					morseCodeHighlighter3.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-30f, 20f);
+					morseCodeHighlighter3.GetComponent<RectTransform>().anchoredPosition = morseCodeCanvasTransform.GetChild(i).localPosition; //+ new Vector3(-30f, 20f);
 					morseCodeHighlighter3.GetComponent<Animator>().SetTrigger("anim");
 				}
 			}
