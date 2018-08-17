@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MorseController : MonoBehaviour {
 
@@ -9,8 +10,9 @@ public class MorseController : MonoBehaviour {
 
 	public MorseCodeList myMorseCodeList;
 
-	public Transform morseCodeHighlighterLeft;
-	public Transform morseCodeHighlighterRight;
+	public Transform morseCodeHighlighter1;
+	public Transform morseCodeHighlighter2;
+	public Transform morseCodeHighlighter3;
 	public Transform morseCodeCanvasTransform;
 
 	private string parsedMorse = "";
@@ -33,19 +35,24 @@ public class MorseController : MonoBehaviour {
 		canAcceptMorse = false;
 		StartCoroutine("CanAcceptMorseAgainCountdown");
 
-		GameManager.NewTurn();
 		// compare morse
 
 		for (int i = 0; i < myMorseCodeList.morseCodeList.Count; i += 1) {
 			if (myMorseCodeList.morseCodeList[i] == parsedMorse) {
-				
-				if ((i + 1) <= 18) {
+
+
+
+				if ((i + 1) <= 13) {
 					// left side of transforms
-					morseCodeHighlighterLeft.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-33f, 20f);
-					morseCodeHighlighterLeft.GetComponent<Animator>().SetTrigger("anim");
+					morseCodeHighlighter1.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-33f, 20f);
+					morseCodeHighlighter1.GetComponent<Animator>().SetTrigger("anim");
+				} else if ((i + 1) <= 26) {
+					// left side of transforms
+					morseCodeHighlighter2.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-28f, 20f);
+					morseCodeHighlighter2.GetComponent<Animator>().SetTrigger("anim");
 				} else {
-					morseCodeHighlighterRight.position = morseCodeCanvasTransform.GetChild(i+1).transform.position + new Vector3(-33f, 20f);
-					morseCodeHighlighterRight.GetComponent<Animator>().SetTrigger("anim");
+					morseCodeHighlighter3.position = morseCodeCanvasTransform.GetChild(i).transform.position + new Vector3(-30f, 20f);
+					morseCodeHighlighter3.GetComponent<Animator>().SetTrigger("anim");
 				}
 			}
 		}
@@ -57,6 +64,7 @@ public class MorseController : MonoBehaviour {
 			yield return null;
 		}
 
+		GameManager.NewTurn();
 		canAcceptMorse = true;
 		parsedMorse = "";
 		foreach (Transform child in transform) {
@@ -68,11 +76,12 @@ public class MorseController : MonoBehaviour {
 	}
 	void Update ()
 	{
+		/*
 		if (Input.GetKeyDown(KeyCode.KeypadEnter) == true || Input.GetKeyDown(KeyCode.Return) == true || Input.GetMouseButtonDown(1) == true) {
 			SendMorse();
 			StopCoroutine("MorseSendCountdown");
 		}
-
+		*/
 		if (canAcceptMorse == false) {
 			return;
 		}

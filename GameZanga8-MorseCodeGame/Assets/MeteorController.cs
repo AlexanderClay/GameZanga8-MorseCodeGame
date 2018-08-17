@@ -2,46 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlaneController : MonoBehaviour {
-
+public class MeteorController : MonoBehaviour
+{
 	public float rate = 0.4f;
 	public Vector2 gridPos;
-	public bool dirLeft;
-
 	private Vector3 target;
-
-	void Start () {
+	// Use this for initialization
+	void Start()
+	{
 		GameManager.objectTurnStack.Add(transform);
 
-		GetComponent<SpriteRenderer>().flipX = dirLeft;
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 		target = transform.position;
 	}
-
 	public void Update()
 	{
 		transform.position = Vector3.Lerp(transform.position, target, rate);
 	}
+	public void NewTurn()
+	{
 
-	public void NewTurn () {
 		Vector2 nextGridPos;
-		if (dirLeft == false) {
-			nextGridPos = new Vector2(gridPos.x + 1, gridPos.y);
-		} else {
-			nextGridPos = new Vector2(gridPos.x - 1, gridPos.y);
-		}
-		
-		if (nextGridPos.x <= 0) {
-			dirLeft = false;
-			nextGridPos = gridPos;
-		} else if (nextGridPos.x >= 5) {
-			dirLeft = true;
-			nextGridPos = gridPos;
-		}
+		nextGridPos = new Vector2(gridPos.x, gridPos.y + 2);
 
 		gridPos = nextGridPos;
 
-		GetComponent<SpriteRenderer>().flipX = dirLeft;
 		target = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 	}
 }
