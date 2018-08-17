@@ -5,7 +5,7 @@ using UnityEngine;
 public class Pool : MonoBehaviour {
 
 	public GameObject templatePrefeb;
-	private List<GameObject> pooledObjects;
+	private List<GameObject> pooledObjects = new List<GameObject>();
 	public int createOnStart = 10;
 	// Use this for initialization
 	private void Start () {
