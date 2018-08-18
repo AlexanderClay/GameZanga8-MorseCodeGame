@@ -943,33 +943,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '.-
-
-    -...
-
-    -.-.
-
-    -..
-
-    .
-
-    ..-.
-
-    --.
-
-    ....
-
-    ..
-
-    .---
-
-    -.-
-
-    .-..
-
-    --
-
-'
+  m_Text: ".\u2013\n\u2013...\r\n\u2013.\u2013.\r\n\u2013..\r\n.\r\n..\u2013.\r\n\u2013\u2013.\r\n....\r\n..\r\n.\u2013\u2013\u2013\r\n\u2013.\u2013\r\n.\u2013..\r\n\u2013\u2013"
 --- !u!222 &207271005
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7400,7 +7374,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2013.\r\n\u2013\u2013\u2013\r\n.\u2013\u2013.\r\n\u2013\u2013.\u2013\r\n.\u2013.\n\u2013\r\n..\u2013\r\n...\u2013\r\n.\u2013\u2013\r\n\u2013..\u2013\r\n\u2013.\u2013\u2013\r\n\u2013\u2013..\r\n\u2013\u2013\u2013\u2013\r\n"
+  m_Text: "\u2013.\r\n\u2013\u2013\u2013\r\n.\u2013\u2013.\r\n\u2013\u2013.\u2013\r\n.\u2013.\r\n...\r\n\u2013\r\n..\u2013\r\n...\u2013\r\n.\u2013\u2013\r\n\u2013..\u2013\r\n\u2013.\u2013\u2013\r\n\u2013\u2013.."
 --- !u!222 &1576206580
 CanvasRenderer:
   m_ObjectHideFlags: 0
