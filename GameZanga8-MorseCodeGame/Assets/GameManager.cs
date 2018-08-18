@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 	
-	public static int levelNumber = 1;
+	public static int levelNumber = 0;
 	public List<GameObject> worlds;
 
 	public static GameObject gameManagerObject;
@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour {
 		audioObj.GetComponent<AudioSource>().PlayWebGL(audioClipToPlay);
 		audioObj.GetComponent<ObjDestroyer>().DestroyCountdown(timeToLive);
 	}
+	public static void SpawnExplosionAtPosition(Vector3 pos)
+	{
+		Transform explosion = explosionPool.Spawn(pos).transform;
+		objectTurnStack.Add(explosion);
+	}
 	public static void SpawnExplosionAtIndex(int index)
 	{
 		Transform explosion = explosionPool.Spawn(worldGridPositions.GetChild(index).position).transform;
@@ -84,8 +89,7 @@ public class GameManager : MonoBehaviour {
 		int index = (x + (y * 6));
 
 		if (y >= 6) {
-			GameManager.SpawnExplosionAtIndex(index);
-			Death();
+			// death
 		}
 
 		return worldGridPositions.GetChild(index).position;
