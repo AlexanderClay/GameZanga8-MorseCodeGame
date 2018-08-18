@@ -18,8 +18,10 @@ public class MeteorController : MonoBehaviour
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 
 		foreach (Transform trans in transform) {
+			if (trans.GetComponent<TrailRenderer>() == true) {
 
-			trans.GetComponent<TrailRenderer>().Clear();
+				trans.GetComponent<TrailRenderer>().Clear();
+			}
 		}
 
 		target = transform.position;
