@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EventPlayMusic : MonoBehaviour {
 	public AudioClip musicLoop;
 
 	private void Start()
 	{
+		DontDestroyOnLoad(gameObject);
+		/*
 		if (GameManager.hasPlayedMusic == false) {
 			GameManager.hasPlayedMusic = true;
 			GetComponent<AudioSource>().PlayWebGL();
 		} else {
 			Destroy(gameObject);
 		}
+		*/
 	}
 	void Update () {
 		

@@ -64,12 +64,13 @@ public class GameManager : MonoBehaviour {
 			x = 5;
 
 		}
+		int index = (x + (y * 6));
+
 		if (y >= 6) {
+			GameManager.SpawnExplosionAtIndex(index);
 			Death();
 		}
 
-		int index = (x + (y * 6));
-		
 		return worldGridPositions.GetChild(index).position;
 	}
 	public static void NewTurn()

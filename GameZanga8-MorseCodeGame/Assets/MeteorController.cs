@@ -5,6 +5,7 @@ using UnityEngine;
 public class MeteorController : MonoBehaviour
 {
 	public float rate = 0.4f;
+	public int dropRate = 2;
 	public Vector2 gridPos;
 	private Vector3 target;
 
@@ -15,6 +16,12 @@ public class MeteorController : MonoBehaviour
 		GameManager.objectTurnStack.Add(transform);
 
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
+
+		foreach (Transform trans in transform) {
+
+			trans.GetComponent<TrailRenderer>().Clear();
+		}
+
 		target = transform.position;
 		myRigidbody = GetComponent<Rigidbody2D>();
 	}
@@ -26,7 +33,7 @@ public class MeteorController : MonoBehaviour
 	{
 
 		Vector2 nextGridPos;
-		nextGridPos = new Vector2(gridPos.x, gridPos.y + 2);
+		nextGridPos = new Vector2(gridPos.x, gridPos.y + dropRate);
 
 		gridPos = nextGridPos;
 
