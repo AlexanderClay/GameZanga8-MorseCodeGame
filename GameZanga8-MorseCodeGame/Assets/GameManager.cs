@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+	public static bool hasPlayedMusic = false;
 	public static int levelNumber = 0;
 	public static GameObject screenFadeIn;
 	public static Pool audioPool;
