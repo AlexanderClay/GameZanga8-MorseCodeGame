@@ -14,7 +14,12 @@ public class PlaneController : MonoBehaviour {
 	void Start () {
 		GameManager.objectTurnStack.Add(transform);
 
-		GetComponent<SpriteRenderer>().flipX = dirLeft;
+		if (dirLeft == true) {
+			GetComponent<Animator>().SetTrigger("left");
+		} else {
+			GetComponent<Animator>().SetTrigger("right");
+		}
+
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 		target = transform.position;
 		myRigidbody = GetComponent<Rigidbody2D>();
@@ -33,17 +38,20 @@ public class PlaneController : MonoBehaviour {
 			nextGridPos = new Vector2(gridPos.x - 1, gridPos.y);
 		}
 		
-		if (nextGridPos.x <= 0) {
+		if (nextGridPos.x <= -1) {
 			dirLeft = false;
+			GetComponent<Animator>().SetTrigger("right");
+			print("turn right");
 			nextGridPos = gridPos;
-		} else if (nextGridPos.x >= 5) {
+		} else if (nextGridPos.x >= 6) {
 			dirLeft = true;
+			GetComponent<Animator>().SetTrigger("left");
+			print("turn left");
 			nextGridPos = gridPos;
 		}
 
 		gridPos = nextGridPos;
 
-		GetComponent<SpriteRenderer>().flipX = dirLeft;
 		target = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 	}
 }

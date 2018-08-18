@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 199036007913048304}
   - component: {fileID: 61631227426953620}
   - component: {fileID: 114394916835175480}
-  - component: {fileID: 82345459976118090}
+  - component: {fileID: 82010903424184292}
   m_Layer: 9
   m_Name: SpriteExplosion
   m_TagString: Untagged
@@ -69,7 +69,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!82 &82345459976118090
+--- !u!82 &82010903424184292
 AudioSource:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}

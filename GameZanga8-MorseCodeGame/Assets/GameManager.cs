@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+	public static int levelNumber = 0;
 	public static GameObject screenFadeIn;
 	public static Pool audioPool;
 	public static Pool explosionPool;
