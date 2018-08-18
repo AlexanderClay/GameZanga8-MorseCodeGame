@@ -38,6 +38,15 @@ public class MorseController : MonoBehaviour {
 
 		// compare morse
 
+		if (GameManager.levelNumber == 0) {
+			if (parsedMorse != "...") {
+				return;
+			} else {
+				GameManager.gameManagerObject.GetComponent<GameManager>().IncrementLevel();
+				return;
+			}
+		}
+
 		for (int i = 0; i < myMorseCodeList.morseCodeList.Count; i += 1) {
 			if (myMorseCodeList.morseCodeList[i] == parsedMorse) {
 

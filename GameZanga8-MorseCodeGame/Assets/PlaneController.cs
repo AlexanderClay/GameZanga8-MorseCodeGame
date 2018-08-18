@@ -7,6 +7,11 @@ public class PlaneController : MonoBehaviour {
 	public float rate = 0.4f;
 	public Vector2 gridPos;
 	public bool dirLeft;
+	public int gridSpeed = 1;
+
+	public GameObject destructionSpawnObject;
+	public int turnsUntilDroppingBombDefault;
+	public GameObject bombObject;
 
 	private Vector3 target;
 	private Rigidbody2D myRigidbody;

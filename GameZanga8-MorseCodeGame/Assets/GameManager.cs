@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+	
+	public static int levelNumber = 1;
+	public List<GameObject> worlds;
 
-	public static bool hasPlayedMusic = false;
-	public static int levelNumber = 0;
+	public static GameObject gameManagerObject;
 	public static GameObject screenFadeIn;
 	public static Pool audioPool;
 	public static Pool explosionPool;
@@ -17,10 +19,25 @@ public class GameManager : MonoBehaviour {
 	{
 		objectTurnStack.Clear();
 
+		SpawnCurrentLevel();
+
+		gameManagerObject = gameObject;
 		screenFadeIn = GameObject.Find("ScreenFadeIn");
 		audioPool = transform.Find("AudioPool").GetComponent<Pool>();
 		explosionPool = transform.Find("ExplosionPool").GetComponent<Pool>();
 		worldGridPositions = GameObject.Find("WorldGridPositions").transform;
+	}
+	public void IncrementLevel()
+	{
+		levelNumber += 1;
+		screenFadeIn.GetComponent<Animator>().SetTrigger("end_level");
+	}
+	public void SpawnCurrentLevel()
+	{
+		for (int i = 0; i < worlds.Count; i += 1) {
+			worlds[i].SetActive(false);
+		}
+		worlds[levelNumber].SetActive(true);
 	}
 	public static void Death()
 	{
