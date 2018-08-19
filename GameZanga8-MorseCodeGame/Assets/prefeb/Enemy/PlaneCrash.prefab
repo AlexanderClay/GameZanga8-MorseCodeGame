@@ -163,7 +163,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -309,8 +309,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f4407ad5539cc44913e612f976682a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipThisTurn: 0
   rate: 0.4
-  dropRate: 2
+  dropRate: 1
   gridPos: {x: 4, y: 2}
 --- !u!198 &198032546373049298
 ParticleSystem:

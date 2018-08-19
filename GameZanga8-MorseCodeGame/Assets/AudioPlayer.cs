@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class AudioPlayer : MonoBehaviour {
 	
+	public AudioClip sfx;
 	
 	// Update is called once per frame
 	public void PlaySound () {
-		GetComponent<AudioSource>().PlayWebGL();
+		if (sfx == null) {
+
+			GetComponent<AudioSource>().PlayWebGL();
+		} else {
+
+			GetComponent<AudioSource>().PlayWebGL(sfx);
+		}
 	}
 }

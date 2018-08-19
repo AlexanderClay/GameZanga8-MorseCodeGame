@@ -9,12 +9,15 @@ public class LevelCounter : MonoBehaviour {
 	
 	string newText;
 
-	void Update () {
+	void Start () {
 
-		newText = "[" + GameManager.levelNumber + " / 30]";
+		newText = "Mission: [" + GameManager.levelNumber + " / 30]";
+		GetComponent<Text>().text = newText;
+		/*
 		if (newText != savedText) {
 			savedText = newText;
 			GetComponent<Text>().text = newText;
 		}
+		*/
 	}
 }

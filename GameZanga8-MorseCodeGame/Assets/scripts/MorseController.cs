@@ -8,6 +8,7 @@ public class MorseController : MonoBehaviour {
 
 	public AudioClip blipSound;
 	public AudioClip wrongSound;
+	public AudioClip correctSound;
 
 	public GameObject morseDash;
 	public GameObject morseDot;
@@ -30,7 +31,7 @@ public class MorseController : MonoBehaviour {
 	private bool canAcceptMorse = true;
 	private bool startedClick = false;
 
-	private List<int> alreadySelectedIndex = new List<int>();
+	public List<int> alreadySelectedIndex = new List<int>();
 
 	void Start () {
 		
@@ -45,6 +46,7 @@ public class MorseController : MonoBehaviour {
 
 		// compare morse
 
+
 		if (GameManager.levelNumber == 0) {
 			if (parsedMorse != "...") {
 				return;
@@ -53,13 +55,23 @@ public class MorseController : MonoBehaviour {
 				return;
 			}
 		}
-
+		
 		for (int i = 0; i < myMorseCodeList.morseCodeList.Count; i += 1) {
 			if (myMorseCodeList.morseCodeList[i] == parsedMorse) {
-				if (alreadySelectedIndex.Contains(i) == false) {
+				// space not shot before & has ammo
+				
+				if (GameManager.rocketsShot - GameManager.rocketLimit != 0) {
+
+					if (alreadySelectedIndex.Contains(i) == true) {
+
+						GameManager.SpawnAudioSource(wrongSound, 0.5f, 0.2f);
+					} else {
+
+						GameManager.SpawnAudioSource(correctSound, 0.5f, 0.1f);
+					}
 
 					alreadySelectedIndex.Add(i);
-
+					GameManager.rocketCounter.ShootRocket();
 					GameManager.gameManagerObject.GetComponent<GameManager>().SpawnRocketParticlesForIndex(i);
 					GameManager.gameManagerObject.GetComponent<GameManager>().SpawnExplosionAtIndexWithDelay(i);
 

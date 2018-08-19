@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeteorController : MonoBehaviour
 {
+	public bool canMove = false;
 	public float rate = 0.4f;
 	public int dropRate = 2;
 	public Vector2 gridPos;
@@ -11,9 +12,19 @@ public class MeteorController : MonoBehaviour
 
 	private Rigidbody2D myRigidbody;
 	// Use this for initialization
+	private IEnumerator CanMoveAfterCreation()
+	{
+		float startTime = Time.time;
+		while (Time.time < startTime + 0.6f) {
+			yield return null;
+		}
+
+		canMove = true;
+	}
 	void Start()
 	{
 		GameManager.objectTurnStack.Add(transform);
+		StartCoroutine("CanMoveAfterCreation");
 
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 
@@ -33,7 +44,9 @@ public class MeteorController : MonoBehaviour
 	}
 	public void NewTurn()
 	{
-
+		if (canMove == false) {
+			return;
+		}
 		Vector2 nextGridPos;
 		nextGridPos = new Vector2(gridPos.x, gridPos.y + dropRate);
 

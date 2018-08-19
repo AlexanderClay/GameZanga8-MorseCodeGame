@@ -3,10 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-	
-	public static int levelNumber = 0;
-	public List<GameObject> worlds;
 
+	public AudioClip outOfAmmoTurnClip;
+	public static int levelNumber = 0;
+	public static int rocketLimit = 9;
+	public static int rocketsShot = 0;
+	public static int turnCount = 0;
+	public bool playerIsDead = false;
+	public bool playerIsSucceeded = false;
+	public List<GameObject> worlds;
+	public List<int> worldRocketLimit;
+	private bool outOfAmmoAnimation = false;
+	private bool succeededAnimation = false;
+	public GameObject currentWorld;
+
+	public static RocketCounter rocketCounter;
+
+	public static MorseController morseController;
 	private Transform rocketsParticleSystem;
 	public static GameObject gameManagerObject;
 	public static GameObject screenFadeIn;
@@ -19,18 +32,83 @@ public class GameManager : MonoBehaviour {
 	private void Awake ()
 	{
 		objectTurnStack.Clear();
-
+		turnCount = 0;
+		rocketsShot = 0;
 		SpawnCurrentLevel();
 
 		gameManagerObject = gameObject;
+		rocketCounter = GameObject.Find("Canvas/CommandEnter/RocketCounter").GetComponent<RocketCounter>();
+		morseController = GameObject.Find("Canvas/CommandEnter/MorseLine").GetComponent<MorseController>();
+
 		screenFadeIn = GameObject.Find("ScreenFadeIn");
 		rocketsParticleSystem = transform.Find("RocketsParticleSystem");
 		audioPool = transform.Find("AudioPool").GetComponent<Pool>();
 		explosionPool = transform.Find("ExplosionPool").GetComponent<Pool>();
 		worldGridPositions = GameObject.Find("WorldGridPositions").transform;
 	}
+	public void Update()
+	{
+		CheckOutofAmmoUpdate();
+		CheckSucceededUpdate();
+
+	}
+	public void CheckOutofAmmoUpdate()
+	{
+		if (outOfAmmoAnimation == true || levelNumber == 0 || playerIsSucceeded == true) {
+			return;
+		}
+		if (turnCount != 0 && rocketsShot == rocketLimit) {
+			outOfAmmoAnimation = true;
+			rocketCounter.OutOfAmmoAnimation();
+			StartCoroutine("OutOfAmmoStartDelay");
+		}
+	}
+	private IEnumerator OutOfAmmoStartDelay()
+	{
+		float startTime = Time.time;
+
+		while (Time.time < startTime + 1f) {
+			yield return null;
+		}
+
+		if (playerIsDead == false && playerIsSucceeded == false) {
+			StartCoroutine("OutOfAmmo");
+		}
+	}
+	private IEnumerator OutOfAmmo()
+	{
+		float startTime = Time.time;
+
+		while (Time.time < startTime + 0.4f) {
+			yield return null;
+		}
+
+		SpawnAudioSource(outOfAmmoTurnClip, 0.5f);
+		NewTurn();
+		if (playerIsDead == false && playerIsSucceeded == false) {
+			StartCoroutine("OutOfAmmo");
+		}
+	}
+	public void CheckSucceededUpdate()
+	{
+
+		if (succeededAnimation == true || levelNumber == 0 || playerIsDead == true) {
+			return;
+		}
+
+		// check all enemies in this level if they are alive
+		foreach (Transform child in currentWorld.transform) {
+			if (child.gameObject.activeSelf == true) {
+				return;
+			}
+		}
+		// else, all enemies dead:
+		IncrementLevel();
+	}
 	public void IncrementLevel()
 	{
+		succeededAnimation = true;
+		playerIsSucceeded = true;
 		levelNumber += 1;
 		screenFadeIn.GetComponent<Animator>().SetTrigger("end_level");
 	}
@@ -39,10 +117,15 @@ public class GameManager : MonoBehaviour {
 		for (int i = 0; i < worlds.Count; i += 1) {
 			worlds[i].SetActive(false);
 		}
-		worlds[levelNumber].SetActive(true);
+
+		rocketLimit = worldRocketLimit[levelNumber];
+
+		currentWorld = worlds[levelNumber];
+		currentWorld.SetActive(true);
 	}
 	public static void Death()
 	{
+		gameManagerObject.GetComponent<GameManager>().playerIsDead = true;
 		screenFadeIn.GetComponent<Animator>().SetTrigger("death");
 	}
 	public static void SpawnAudioSource (AudioClip audioClipToPlay, float timeToLive, float volume = 1f) {
@@ -85,8 +168,12 @@ public class GameManager : MonoBehaviour {
 		rocketsParticleSystem.position = new Vector3(targetPosition.x, targetPosition.y - 17.5f, 0f);
 
 		rocketsParticleSystem.GetComponent<ParticleSystem>().Play();
-		rocketsParticleSystem.GetComponent<AudioSource>().PlayWebGL();
 
+	}
+	public static int GetIndexFromGridPos(Vector2 pos)
+	{
+
+		return (int)(pos.x + (pos.x * 6));
 	}
 	public static Vector3 GetWorldPosFromIndex(int index)
 	{
@@ -125,7 +212,8 @@ public class GameManager : MonoBehaviour {
 	}
 	public static void NewTurn()
 	{
-		foreach(Transform obj in objectTurnStack) {
+		turnCount += 1;
+		foreach (Transform obj in objectTurnStack) {
 			if (obj.gameObject.activeSelf == true) {
 				if (obj.GetComponent<PlaneController>() == true) {
 					obj.GetComponent<PlaneController>().NewTurn();
