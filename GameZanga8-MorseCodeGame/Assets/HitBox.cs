@@ -14,6 +14,11 @@ public class HitBox : MonoBehaviour {
 	public void OnTriggerEnter2D (Collider2D other) {
 
 		GameManager.SpawnAudioSource(explosionClip, 1f);
+
+		if (other.GetComponent<PlaneController>()) {
+			other.GetComponent<PlaneController>().OnDestruction();
+		}
+
 		other.gameObject.SetActive(false);
 	}
 }

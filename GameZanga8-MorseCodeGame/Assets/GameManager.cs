@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 	public static int levelNumber = 0;
 	public List<GameObject> worlds;
 
+	private Transform rocketsParticleSystem;
 	public static GameObject gameManagerObject;
 	public static GameObject screenFadeIn;
 	public static Pool audioPool;
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour {
 
 		gameManagerObject = gameObject;
 		screenFadeIn = GameObject.Find("ScreenFadeIn");
+		rocketsParticleSystem = transform.Find("RocketsParticleSystem");
 		audioPool = transform.Find("AudioPool").GetComponent<Pool>();
 		explosionPool = transform.Find("ExplosionPool").GetComponent<Pool>();
 		worldGridPositions = GameObject.Find("WorldGridPositions").transform;
@@ -43,10 +45,10 @@ public class GameManager : MonoBehaviour {
 	{
 		screenFadeIn.GetComponent<Animator>().SetTrigger("death");
 	}
-	public static void SpawnAudioSource (AudioClip audioClipToPlay, float timeToLive) {
+	public static void SpawnAudioSource (AudioClip audioClipToPlay, float timeToLive, float volume = 1f) {
 
 		GameObject audioObj = audioPool.Spawn(Vector3.zero);
-		audioObj.GetComponent<AudioSource>().PlayWebGL(audioClipToPlay);
+		audioObj.GetComponent<AudioSource>().PlayWebGL(audioClipToPlay, volume);
 		audioObj.GetComponent<ObjDestroyer>().DestroyCountdown(timeToLive);
 	}
 	public static void SpawnExplosionAtPosition(Vector3 pos)
@@ -57,7 +59,34 @@ public class GameManager : MonoBehaviour {
 	public static void SpawnExplosionAtIndex(int index)
 	{
 		Transform explosion = explosionPool.Spawn(worldGridPositions.GetChild(index).position).transform;
-		objectTurnStack.Add(explosion);
+		//objectTurnStack.Add(explosion);
+	}
+	public void SpawnExplosionAtIndexWithDelay(int index)
+	{
+		StartCoroutine("ExplosionDelay", index);
+		//objectTurnStack.Add(explosion);
+	}
+	private IEnumerator ExplosionDelay(int index)
+	{
+		float startTime = Time.time;
+
+		while (Time.time < startTime + 0.4f) {
+
+			yield return null;
+		}
+
+
+		Transform explosion = explosionPool.Spawn(worldGridPositions.GetChild(index).position).transform;
+	}
+
+	public void SpawnRocketParticlesForIndex(int index)
+	{
+		Vector3 targetPosition = worldGridPositions.GetChild(index).position;
+		rocketsParticleSystem.position = new Vector3(targetPosition.x, targetPosition.y - 17.5f, 0f);
+
+		rocketsParticleSystem.GetComponent<ParticleSystem>().Play();
+		rocketsParticleSystem.GetComponent<AudioSource>().PlayWebGL();
+
 	}
 	public static Vector3 GetWorldPosFromIndex(int index)
 	{

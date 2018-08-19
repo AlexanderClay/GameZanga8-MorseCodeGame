@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.EventSystems;
 
 public class MorseController : MonoBehaviour {
+
+	public AudioClip blipSound;
+	public AudioClip wrongSound;
 
 	public GameObject morseDash;
 	public GameObject morseDot;
@@ -26,6 +30,8 @@ public class MorseController : MonoBehaviour {
 	private bool canAcceptMorse = true;
 	private bool startedClick = false;
 
+	private List<int> alreadySelectedIndex = new List<int>();
+
 	void Start () {
 		
 	}
@@ -34,6 +40,7 @@ public class MorseController : MonoBehaviour {
 	{
 		canAcceptMorse = false;
 		StartCoroutine("CanAcceptMorseAgainCountdown");
+		StartCoroutine("NextTurnCountdown");
 		StopCoroutine("MorseSendCountdown");
 
 		// compare morse
@@ -49,9 +56,18 @@ public class MorseController : MonoBehaviour {
 
 		for (int i = 0; i < myMorseCodeList.morseCodeList.Count; i += 1) {
 			if (myMorseCodeList.morseCodeList[i] == parsedMorse) {
+				if (alreadySelectedIndex.Contains(i) == false) {
 
-				GameManager.SpawnExplosionAtIndex(i);
+					alreadySelectedIndex.Add(i);
 
+					GameManager.gameManagerObject.GetComponent<GameManager>().SpawnRocketParticlesForIndex(i);
+					GameManager.gameManagerObject.GetComponent<GameManager>().SpawnExplosionAtIndexWithDelay(i);
+
+				} else {
+
+					GameManager.SpawnAudioSource(wrongSound, 0.5f, 0.2f);
+				}
+				
 				if ((i + 1) <= 13) {
 					// left side of transforms
 					morseCodeHighlighter1.GetComponent<RectTransform>().anchoredPosition = morseCodeCanvasTransform.GetChild(i).localPosition; //+ new Vector3(-33f, 20f);
@@ -64,8 +80,21 @@ public class MorseController : MonoBehaviour {
 					morseCodeHighlighter3.GetComponent<RectTransform>().anchoredPosition = morseCodeCanvasTransform.GetChild(i).localPosition; //+ new Vector3(-30f, 20f);
 					morseCodeHighlighter3.GetComponent<Animator>().SetTrigger("anim");
 				}
+
+				return;
 			}
 		}
+
+		GameManager.SpawnAudioSource(wrongSound, 0.5f, 0.2f);
+	}
+	IEnumerator NextTurnCountdown()
+	{
+		float startTime = Time.time;
+		while (Time.time < startTime + 0.5f) {
+			yield return null;
+		}
+
+		GameManager.NewTurn();
 	}
 	IEnumerator CanAcceptMorseAgainCountdown()
 	{
@@ -73,8 +102,7 @@ public class MorseController : MonoBehaviour {
 		while (Time.time < startTime + 0.2f) {
 			yield return null;
 		}
-
-		GameManager.NewTurn();
+		
 		canAcceptMorse = true;
 		parsedMorse = "";
 		foreach (Transform child in transform) {
@@ -100,7 +128,7 @@ public class MorseController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space) == true || Input.GetMouseButtonDown(0) == true) {
 			startedClick = true;
 			GetComponent<AudioSource>().StopWebGL();
-			GetComponent<AudioSource>().PlayWebGL();
+			GetComponent<AudioSource>().PlayWebGL(blipSound);
 
 			StopCoroutine("StopSound");
 			StopCoroutine("PlayedForAWhileCheck");

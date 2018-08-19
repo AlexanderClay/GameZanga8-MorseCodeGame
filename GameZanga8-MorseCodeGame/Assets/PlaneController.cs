@@ -40,6 +40,11 @@ public class PlaneController : MonoBehaviour {
 	{
 		myRigidbody.MovePosition(Vector3.Lerp(transform.position, target, rate));
 	}
+	public void OnDestruction()
+	{
+		GameObject tempObj = GameObject.Instantiate(destructionSpawnObject);
+		tempObj.GetComponent<MeteorController>().gridPos = new Vector2(gridPos.x, gridPos.y + 1);
+	}
 
 	public void NewTurn () {
 		Vector2 nextGridPos;
