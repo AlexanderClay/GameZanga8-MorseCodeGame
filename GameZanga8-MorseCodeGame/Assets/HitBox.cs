@@ -13,7 +13,7 @@ public class HitBox : MonoBehaviour {
 	// Update is called once per frame
 	public void OnTriggerEnter2D (Collider2D other) {
 
-		GameManager.SpawnAudioSource(explosionClip, 1f);
+		GameManager.SpawnAudioSource(explosionClip, 1f, 0.4f);
 
 		if (other.GetComponent<PlaneController>()) {
 			other.GetComponent<PlaneController>().OnDestruction();

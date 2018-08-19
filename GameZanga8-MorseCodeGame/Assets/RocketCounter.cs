@@ -16,7 +16,7 @@ public class RocketCounter : MonoBehaviour {
 	public void ShootRocket()
 	{
 		GameManager.rocketsShot += 1;
-		transform.GetChild(transform.childCount - GameManager.rocketsShot).GetComponent<Image>().color = Color.red;
+		transform.GetChild(transform.childCount - GameManager.rocketsShot).GetComponent<Image>().color = Color.black;
 		
 	}
 	public void OutOfAmmoAnimation()

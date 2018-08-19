@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 public class MorseController : MonoBehaviour {
 
+	public GameObject yourTurnText;
+	public GameObject enemyTurnText;
+
 	public AudioClip blipSound;
 	public AudioClip wrongSound;
 	public AudioClip correctSound;
@@ -34,17 +37,20 @@ public class MorseController : MonoBehaviour {
 	public List<int> alreadySelectedIndex = new List<int>();
 
 	void Start () {
-		
+		yourTurnText.gameObject.SetActive(true);
+		enemyTurnText.gameObject.SetActive(false);
 	}
 	
 	private void SendMorse()
 	{
 		canAcceptMorse = false;
-		StartCoroutine("CanAcceptMorseAgainCountdown");
+		StartCoroutine("DestroyMorseText");
 		StartCoroutine("NextTurnCountdown");
 		StopCoroutine("MorseSendCountdown");
 
 		// compare morse
+		yourTurnText.gameObject.SetActive(false);
+		enemyTurnText.gameObject.SetActive(true);
 
 
 		if (GameManager.levelNumber == 0) {
@@ -65,15 +71,16 @@ public class MorseController : MonoBehaviour {
 					if (alreadySelectedIndex.Contains(i) == true) {
 
 						GameManager.SpawnAudioSource(wrongSound, 0.5f, 0.2f);
-					} else {
+					}// else {
 
-						GameManager.SpawnAudioSource(correctSound, 0.5f, 0.1f);
-					}
+					//	GameManager.SpawnAudioSource(correctSound, 0.5f, 0.1f);
+					//}
 
 					alreadySelectedIndex.Add(i);
 					GameManager.rocketCounter.ShootRocket();
-					GameManager.gameManagerObject.GetComponent<GameManager>().SpawnRocketParticlesForIndex(i);
-					GameManager.gameManagerObject.GetComponent<GameManager>().SpawnExplosionAtIndexWithDelay(i);
+					//GameManager.gameManagerObject.GetComponent<GameManager>().SpawnRocketParticlesForIndex(i);
+					//GameManager.gameManagerObject.GetComponent<GameManager>().SpawnExplosionAtIndexWithDelay(i);
+					GameManager.SpawnExplosionAtIndex(i);
 
 				} else {
 
@@ -102,20 +109,23 @@ public class MorseController : MonoBehaviour {
 	IEnumerator NextTurnCountdown()
 	{
 		float startTime = Time.time;
-		while (Time.time < startTime + 0.5f) {
+		while (Time.time < startTime + 1.75f) {
 			yield return null;
 		}
-
+		
+		yourTurnText.gameObject.SetActive(true);
+		enemyTurnText.gameObject.SetActive(false);
 		GameManager.NewTurn();
+		// can accept morse
+		canAcceptMorse = true;
 	}
-	IEnumerator CanAcceptMorseAgainCountdown()
+	IEnumerator DestroyMorseText()
 	{
 		float startTime = Time.time;
 		while (Time.time < startTime + 0.2f) {
 			yield return null;
 		}
 		
-		canAcceptMorse = true;
 		parsedMorse = "";
 		foreach (Transform child in transform) {
 			if (child.name != "Cursor") {
@@ -132,6 +142,9 @@ public class MorseController : MonoBehaviour {
 			StopCoroutine("MorseSendCountdown");
 		}
 		*/
+		if (GameManager.levelNumber == 0) {
+			canAcceptMorse = true;
+		}
 		if (canAcceptMorse == false) {
 			return;
 		}

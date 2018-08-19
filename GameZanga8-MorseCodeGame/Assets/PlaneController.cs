@@ -58,9 +58,8 @@ public class PlaneController : MonoBehaviour {
 		if (bombObject != null && gridPos.x > 0 && gridPos.x < 5) {
 
 			turnsUntilDroppingBomb -= 1;
-			if (turnsUntilDroppingBomb <= 0) {
-				turnsUntilDroppingBomb = turnsUntilDroppingBombDefault;
-
+			if (turnsUntilDroppingBomb == 0) {
+				transform.Find("Bomb").gameObject.SetActive(false);
 				GameObject tempObj = GameObject.Instantiate(bombObject, GameManager.gameManagerObject.GetComponent<GameManager>().currentWorld.transform);
 				//tempObj.GetComponent<MeteorController>().skipThisTurn = true;
 				tempObj.GetComponent<MeteorController>().gridPos = new Vector2(gridPos.x, gridPos.y + 1);
