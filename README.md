@@ -1,5 +1,5 @@
 # GameZanga8-MorseCodeGame
-Jam game made in 3 days for Game Zanga 8 by [@alex_clay_](https://twitter.com/alex_clay_/)
+Jam game made in 3 days for Game Zanga 8 by [@alex_clay_](https://twitter.com/alex_clay_/)  
 Testing by [@wombatstuff](https://twitter.com/wombatstuff?lang=en)
 
 ## External assets used:
