@@ -3,7 +3,7 @@ Jam game made in 3 days for Game Zanga 8
 
 ## External assets used:
 ### Fonts:
-English Font: [Tschichold](https://www.dafont.com/tschichold.font)
+English Font: [Tschichold](https://www.dafont.com/tschichold.font)  
 Arabic Font: [Cairo](https://fonts.google.com/specimen/Cairo)
 
 ### Sounds:
