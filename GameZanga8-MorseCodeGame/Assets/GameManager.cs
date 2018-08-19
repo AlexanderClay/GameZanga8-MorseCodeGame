@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	public AudioClip outOfAmmoTurnClip;
-	public static int levelNumber = 0;
+	public static int levelNumber = 0; // 0
 	public static int rocketLimit = 9;
 	public static int rocketsShot = 0;
 	public static int turnCount = 0;

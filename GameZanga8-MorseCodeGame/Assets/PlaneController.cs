@@ -27,6 +27,8 @@ public class PlaneController : MonoBehaviour {
 			GetComponent<Animator>().SetTrigger("right");
 		}
 
+		turnsUntilDroppingBomb = turnsUntilDroppingBombDefault;
+
 		transform.position = GameManager.GetWorldPosFromGrid(gridPos, gameObject);
 		foreach (Transform trans in transform) {
 			if (trans.GetComponent<TrailRenderer>() == true) {
@@ -57,6 +59,7 @@ public class PlaneController : MonoBehaviour {
 
 		if (bombObject != null && gridPos.x > 0 && gridPos.x < 5) {
 
+			print(turnsUntilDroppingBomb);
 			turnsUntilDroppingBomb -= 1;
 			if (turnsUntilDroppingBomb == 0) {
 				transform.Find("Bomb").gameObject.SetActive(false);

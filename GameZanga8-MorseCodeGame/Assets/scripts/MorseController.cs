@@ -142,7 +142,7 @@ public class MorseController : MonoBehaviour {
 			StopCoroutine("MorseSendCountdown");
 		}
 		*/
-		if (GameManager.levelNumber == 0) {
+		if (GameManager.levelNumber == 0 || GameManager.levelNumber == 7) {
 			canAcceptMorse = true;
 		}
 		if (canAcceptMorse == false) {

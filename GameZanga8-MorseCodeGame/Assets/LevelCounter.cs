@@ -11,7 +11,12 @@ public class LevelCounter : MonoBehaviour {
 
 	void Start () {
 
-		newText = "Mission: [" + GameManager.levelNumber + " / 30]";
+		if (GameManager.levelNumber == 7) {
+			newText = "Mission: [End!]";
+		} else {
+			newText = "Mission: [" + GameManager.levelNumber + " / 6]";
+		}
+
 		GetComponent<Text>().text = newText;
 		/*
 		if (newText != savedText) {
